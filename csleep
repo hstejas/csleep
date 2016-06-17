@@ -1,0 +1,22 @@
+#!/usr/bin/perl
+use strict;
+use warnings 'all';
+
+my ($time)=@ARGV;
+
+my %conv = (h => 60*60, m => 60, s => 1, "" => 1);
+
+# arguments could be 1, 1s , 1m or 1h
+print STDERR "Error:\n   usage $0 (number)[h,m,s, ]\n" and exit -1 
+   unless(defined $time and $time=~/^([0-9]+)([hms]?)$/i and $conv{lc($2)});
+
+my $sec = $1 * $conv{lc($2)};
+
+STDOUT->autoflush;
+while($sec)
+{ 
+   print $sec;
+   sleep 1;
+   print "\r", " "x length($sec), "\r";
+   $sec--;
+}
